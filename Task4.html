@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Объявления</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, textarea, select, button {
+            padding: 10px;
+            font-size: 1rem;
+        }
+        .ad-list {
+            margin-top: 20px;
+        }
+        .ad-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .ad-item img {
+            max-width: 100%;
+            height: auto;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Добавить объявление</h2>
+        <form id="adForm">
+            <input type="text" id="title" placeholder="Заголовок" required>
+            <textarea id="description" placeholder="Описание" required></textarea>
+            <input type="file" id="image" accept="image/*">
+            <select id="category">
+                <option value="Авто">Авто</option>
+                <option value="Недвижимость">Недвижимость</option>
+                <option value="Электроника">Электроника</option>
+            </select>
+            <input type="text" id="contact" placeholder="Контактные данные" required>
+            <button type="submit">Опубликовать</button>
+        </form>
+
+        <h2>Объявления</h2>
+        <select id="filter">
+            <option value="all">Все категории</option>
+            <option value="Авто">Авто</option>
+            <option value="Недвижимость">Недвижимость</option>
+            <option value="Электроника">Электроника</option>
+        </select>
+        <div class="ad-list" id="adList"></div>
+    </div>
+
+    <script>
+        document.getElementById('adForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value;
+            const contact = document.getElementById('contact').value;
+            const file = document.getElementById('image').files[0];
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const adList = document.getElementById('adList');
+                const adItem = document.createElement('div');
+                adItem.classList.add('ad-item');
+                adItem.innerHTML = `
+                    <details>
+                        <summary>${title} - ${category}</summary>
+                        <p>${description}</p>
+                        <img src="${event.target.result}" alt="${title}">
+                        <p>Контакты: ${contact}</p>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=#" target="_blank">Поделиться</a>
+                    </details>
+                `;
+                adList.prepend(adItem);
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('filter').addEventListener('change', function() {
+            const selectedCategory = this.value;
+            document.querySelectorAll('.ad-item').forEach(ad => {
+                ad.style.display = ad.innerHTML.includes(selectedCategory) || selectedCategory === 'all' ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
