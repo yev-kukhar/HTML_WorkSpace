@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт-визитка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        header, footer {
+            background: #007BFF;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .portfolio img {
+            width: 100px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .portfolio img:hover {
+            transform: scale(1.1);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal img {
+            width: 50%;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .theme-toggle {
+            margin: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Мой сайт-визитка</h1>
+        <button class="theme-toggle" onclick="toggleTheme()">Переключить тему</button>
+    </header>
+    <main class="container">
+        <section>
+            <h2>О себе</h2>
+            <img src="https://i.pinimg.com/736x/0f/78/5d/0f785d55cea2a407ac8c1d0c6ef19292.jpg" alt="О себе" style="width:150px; border-radius:50%;">
+            <p>Привет! Я веб-разработчик, создаю красивые и удобные сайты.</p>
+        </section>
+        <section class="portfolio">
+            <h2>Портфолио</h2>
+            <img src="https://web41.com.br/wp-content/uploads/2022/02/sites-responsivos.png" alt="Проект 1" onclick="openModal(this.src)">
+            <img src="https://web41.com.br/wp-content/uploads/2022/02/sites-responsivos.png" alt="Проект 2" onclick="openModal(this.src)">
+        </section>
+        <section>
+            <h2>Контакты</h2>
+            <form class="contact-form">
+                <input type="text" placeholder="Имя" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Сообщение" required></textarea>
+                <button type="submit">Отправить</button>
+            </form>
+            <iframe src="https://maps.google.com" width="100%" height="200"></iframe>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Все права защищены</p>
+    </footer>
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <img id="modalImg">
+    </div>
+    <script>
+        function openModal(src) {
+            document.getElementById("imageModal").style.display = "flex";
+            document.getElementById("modalImg").src = src;
+        }
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+        }
+    </script>
+</body>
+</html>
