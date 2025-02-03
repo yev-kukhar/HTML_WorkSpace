@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет-магазин</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        .catalog {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+        }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-table th, .cart-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        @media (max-width: 768px) {
+            .catalog {
+                flex-direction: column;
+            }
+            .cart-table, .cart-table tbody, .cart-table tr, .cart-table td {
+                display: block;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Интернет-магазин</h1>
+    </header>
+    <main class="container">
+        <section class="catalog">
+            <div class="product">
+                <img src="product1.jpg" alt="Товар 1" width="100%">
+                <h2>Товар 1</h2>
+                <p>Цена: 1000 грн.</p>
+                <button onclick="addToCart('Товар 1', 1000)">Добавить в корзину</button>
+            </div>
+            <div class="product">
+                <img src="product2.jpg" alt="Товар 2" width="100%">
+                <h2>Товар 2</h2>
+                <p>Цена: 1500 грн.</p>
+                <button onclick="addToCart('Товар 2', 1500)">Добавить в корзину</button>
+            </div>
+        </section>
+        <section>
+            <h2>Корзина</h2>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                        <th>Итого</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-body"></tbody>
+            </table>
+            <p>Общая сумма: <span id="total-price">0</span> грн.</p>
+        </section>
+        <section class="form-container">
+            <h2>Оформление заказа</h2>
+            <form onsubmit="return validateForm()">
+                <input type="text" id="name" placeholder="Имя" required>
+                <input type="tel" id="phone" placeholder="Телефон" required>
+                <textarea id="address" placeholder="Адрес" required></textarea>
+                <button type="submit">Оформить заказ</button>
+            </form>
+        </section>
+    </main>
+    <script>
+        let cart = [];
+        function addToCart(name, price) {
+            let item = cart.find(p => p.name === name);
+            if (item) {
+                item.quantity++;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            updateCart();
+        }
+        function updateCart() {
+            let cartBody = document.getElementById("cart-body");
+            let totalPrice = 0;
+            cartBody.innerHTML = "";
+            cart.forEach(item => {
+                let row = `<tr>
+                    <td>${item.name}</td>
+                    <td><input type="number" value="${item.quantity}" min="1" onchange="changeQuantity('${item.name}', this.value)"></td>
+                    <td>${item.price} грн.</td>
+                    <td>${item.price * item.quantity} грн.</td>
+                </tr>`;
+                totalPrice += item.price * item.quantity;
+                cartBody.innerHTML += row;
+            });
+            document.getElementById("total-price").innerText = totalPrice;
+        }
+        function changeQuantity(name, quantity) {
+            let item = cart.find(p => p.name === name);
+            if (item) {
+                item.quantity = parseInt(quantity);
+                updateCart();
+            }
+        }
+        function validateForm() {
+            let name = document.getElementById("name").value;
+            let phone = document.getElementById("phone").value;
+            let address = document.getElementById("address").value;
+            if (name.length < 3 || phone.length < 10 || address.length < 5) {
+                alert("Пожалуйста, заполните форму корректно.");
+                return false;
+            }
+            alert("Заказ оформлен!");
+            return true;
+        }
+    </script>
+</body>
+</html>
