@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест по HTML</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0;
+            transition: width 0.5s;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Проверь свои знания HTML</h2>
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <form id="quizForm">
+            <div class="question">
+                <p>1. Какой тег используется для создания ссылки?</p>
+                <input type="radio" name="q1" value="a"> &lt;a&gt;<br>
+                <input type="radio" name="q1" value="b"> &lt;link&gt;<br>
+                <input type="radio" name="q1" value="c"> &lt;href&gt;
+            </div>
+            <div class="question">
+                <p>2. Какой атрибут указывает путь к изображению?</p>
+                <input type="radio" name="q2" value="a"> href<br>
+                <input type="radio" name="q2" value="b"> src<br>
+                <input type="radio" name="q2" value="c"> alt
+            </div>
+            <div>
+                <p>Комментарий:</p>
+                <textarea id="comment" rows="4" cols="40"></textarea>
+            </div>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+    <div class="modal" id="resultModal">
+        <h3>Результаты теста</h3>
+        <p id="resultText"></p>
+        <button onclick="closeModal()">Закрыть</button>
+    </div>
+    <script>
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let correctAnswers = { q1: 'a', q2: 'b' };
+            let userAnswers = {
+                q1: document.querySelector('input[name="q1"]:checked')?.value,
+                q2: document.querySelector('input[name="q2"]:checked')?.value
+            };
+            let score = 0;
+            for (let key in correctAnswers) {
+                if (userAnswers[key] === correctAnswers[key]) score++;
+            }
+            document.getElementById('resultText').innerText = `Вы набрали ${score} из 2 баллов.`;
+            document.getElementById('resultModal').style.display = 'block';
+        });
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
